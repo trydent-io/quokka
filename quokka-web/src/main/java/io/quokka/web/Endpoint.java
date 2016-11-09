@@ -14,7 +14,7 @@ public interface Endpoint {
 	}
 
 	static Endpoint on(final Path path, final HttpMethod... methods) {
-		return new PlainEndpoint(path, Lists.immutable.with(methods));
+		return new EndpointImpl(path, Lists.immutable.with(methods));
 	}
 
 	static Endpoint endpoint(final String path, final HttpMethod... methods) {
@@ -25,20 +25,11 @@ public interface Endpoint {
 		return on(path, methods);
 	}
 
-	static Endpoint on(final String path, final Endpoint endpoint, final HttpMethod... methods) {
-		return on(Path.of(path), methods);
-	}
-
-	static Endpoint on(final Path path, final Endpoint endpoint, final HttpMethod... methods) {
-		return new PlainEndpoint(path, Lists.immutable.with(methods));
-	}
-
-	static Endpoint endpoint(final String path, final Endpoint endpoint, final HttpMethod... methods) {
-		return on(path, methods);
-	}
-
-	static Endpoint endpoint(final Path path, final Endpoint endpoint, final HttpMethod... methods) {
-		return on(path, methods);
+	static Endpoint[] endpoint(final Path path, final Endpoint endpoint, final HttpMethod... methods) {
+		return new Endpoint[] {
+			on(path, methods),
+			new EndpointImpl(path.join(endpoint.path()))
+		};
 	}
 
 	interface Match<T> {
