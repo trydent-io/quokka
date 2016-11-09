@@ -14,11 +14,25 @@ final class PathImpl implements Path {
 		this.steps = steps;
 	}
 
-
 	@Override
 	public String joined() {
 		return StreamSupport
 			.stream(this.steps.spliterator(), false)
 			.collect(joining("/"));
+	}
+
+	@Override
+	public Iterable<String> steps() {
+		return this.steps;
+	}
+
+	@Override
+	public Path after(Path path) {
+		return null;
+	}
+
+	@Override
+	public Path before(Path path) {
+		return null;
 	}
 }
